@@ -1,6 +1,6 @@
 module github.com/afoejoe/football-predict
 
-go 1.21.0
+go 1.21
 
 require (
 	github.com/go-playground/form/v4 v4.2.1
