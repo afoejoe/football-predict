@@ -44,6 +44,9 @@ jobs:
           echo NOTIFICATIONS_EMAIL=${{ secrets.NOTIFICATIONS_EMAIL }} >> .envrc
           cat .envrc
 
+      - name: Build binary
+        run: go build -o=/tmp/bin/web ./cmd/web
+
       - name: Set up SSH
         run: |
           mkdir -p ~/.ssh/ && touch ./deploy.key
