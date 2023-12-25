@@ -5,7 +5,7 @@ module.exports = {
       "exec_interpreter": "none",
       "exec_mode": "",
       "env": {
-          "NODE_ENV": "production",
+          "NODE_ENV": "dev",
           "PORT": 4000,
           "HOST": "127.0.0.1",
           "ORIGIN": "http://api.naijaanswers.com"
@@ -15,7 +15,7 @@ module.exports = {
       // "dev" is the environment name
       dev: {
         // SSH key path, default to $HOME/.ssh
-        key: "/Users/josh/.ssh/football_predict",
+        key: "deploy.key",
         // SSH user
         user: "deploy",
         // SSH host
