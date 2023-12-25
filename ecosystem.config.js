@@ -1,15 +1,7 @@
 module.exports = {
     apps: [{
       name: "predict.dev",
-      "script": "make build && make run",
-      "exec_interpreter": "none",
-      "exec_mode": "",
-      "env": {
-          "NODE_ENV": "dev",
-          "PORT": 4000,
-          "HOST": "127.0.0.1",
-          "ORIGIN": "http://api.naijaanswers.com"
-      }
+      "script": "./run.sh"
     }],
     deploy: {
       // "dev" is the environment name
@@ -37,7 +29,7 @@ module.exports = {
         // pre-deploy action
         'pre-deploy-local': "echo 'This is a local executed command'",
         // post-deploy action
-        "post-deploy": "touch .envrc && > .envrc && echo DB_DSN=$DEV_DB_DSN >> .envrc && echo HTTP_PORT=$DEV_HTTP_PORT >> .envrc && echo BASIC_AUTH_HASHED_PASSWORD=$BASIC_AUTH_HASHED_PASSWORD >> .envrc  && echo NOTIFICATIONS_EMAIL=$NOTIFICATIONS_EMAIL >> .envrc && pm2 reload ecosystem.config.js --env dev && pm2 save",
+        "post-deploy": "touch .envrc && > .envrc && echo DB_DSN=$DEV_DB_DSN >> .envrc && echo HTTP_PORT=$DEV_HTTP_PORT >> .envrc && echo BASIC_AUTH_HASHED_PASSWORD=$BASIC_AUTH_HASHED_PASSWORD >> .envrc  && echo NOTIFICATIONS_EMAIL=$NOTIFICATIONS_EMAIL >> .envrc && chmod +x ./run.sh && pm2 reload ecosystem.config.js --env dev && pm2 save",
         "env": {
             "DEV_DB_DSN": process.env.DEV_DB_DSN,
             "DEV_HTTP_PORT": process.env.DEV_HTTP_PORT,
