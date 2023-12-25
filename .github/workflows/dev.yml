@@ -1,0 +1,65 @@
+name: Deploy backend to staging environment
+
+on:
+  push:
+    branches: [dev]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+concurrency:
+  group: 'pages'
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.16.0
+          cache: 'npm'
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: 1.21.2
+
+      - run: go version
+
+      - name: Build Go binary
+        run: go mod download
+
+      - name: Create env file
+        run: |
+          touch .envrc
+          echo DEV_DB_DSN=${{ secrets.DEV_DB_DSN }} >> .envrc
+          echo DEV_HTTP_PORT=${{ secrets.DEV_HTTP_PORT }} >> .envrc
+          echo basic-auth-hashed-password"=${{ secrets.basic-auth-hashed-password" }} >> .envrc
+          echo notifications-email=${{ secrets.notifications-email }} >> .envrc
+          cat .envrc
+
+      # - name: Set up SSH
+      #   run: |
+      #     mkdir -p ~/.ssh/ && touch ./deploy.key
+      #     echo "$SSH_PRIVATE_KEY" > ./deploy.key
+      #     sudo chmod 600 ./deploy.key
+      #     echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+      #   shell: bash
+
+        env:
+          SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
+          SSH_KNOWN_HOSTS: ${{secrets.SSH_KNOWN_HOSTS}}
+
+
+      - name: Install PM2
+        run: npm i -g pm2
+
+      - name: Deploy
+        run: env $(cat .envrc | grep -v \"#\" | xargs) pm2 deploy ecosystem.config.js dev
+
