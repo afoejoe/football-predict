@@ -2,3 +2,4 @@ bin/
 tmp/
 build-errors.log
 .envrc
+.DS_Store

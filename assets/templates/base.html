@@ -1,23 +1,31 @@
 {{define "base"}}
 <!doctype html>
 <html lang='en'>
-    <head>
-        <meta charset='utf-8'>
-        <title>{{template "page:title" .}}</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        {{block "page:meta" .}}{{end}}
-        
-        <link rel='stylesheet' href='/static/css/main.css?version={{.Version}}'>
-    </head>
-    <body>
-        <header>
-            <h1><a href="/">Example header</a></h1>
+
+<head>
+    <meta charset='utf-8'>
+    <title>{{template "page:title" .}}</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+    {{block "page:meta" .}}{{end}}
+
+    <script src="/static/js/htmx.min.js"></script>
+    <link rel='stylesheet'
+          href='/static/css/main.css?version={{.Version}}'>
+    <script src="https://cdn.tailwindcss.com/"></script>
+</head>
+
+<body hx-boost="true">
+    <div class="flex flex-col min-h-screen scroll-smooth">
+        <header class="px-4 lg:px-6 h-14 flex items-center sticky top-0 bg-white z-50 border-b">
             {{template "partial:nav" .}}
         </header>
-        <main>
+        <main class="flex-1">
             {{template "page:main" .}}
         </main>
         {{template "partial:footer" .}}
-    </body>
+    </div>
+</body>
+
 </html>
 {{end}}

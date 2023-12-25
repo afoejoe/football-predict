@@ -1,1 +1,1 @@
-DROP TABLE IF EXISTS "blog"
+DROP TABLE IF EXISTS "prediction";

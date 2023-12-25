@@ -1,0 +1,138 @@
+{{define "page:title"}}Example page{{end}}
+
+{{define "page:main"}}
+<section class="w-full p-4 space-y-8">
+    <div class="flex justify-between items-center">
+        <h1 class="text-3xl font-bold">Admin Panel</h1><button onclick="window.myDialog.showModal()"
+                class="px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded hover:bg-blue-600">Add New</button>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div>
+            <div class="rounded-lg border bg-card text-card-foreground shadow-sm"
+                 data-v0-t="card">
+                <div class="flex flex-col space-y-1.5 p-6">
+                    <h2 class="text-2xl font-semibold">Team A vs Team B</h2>
+                    <p class="text-gray-500">Date: 25th December, 2023</p>
+                </div>
+                <div class="p-6">
+                    <p>Prediction Odds: 2.5:1</p>
+                    <div class="flex justify-between mt-4"><button onclick="window.myDialog.showModal()"
+                                class="px-2 py-1 text-sm font-medium text-white bg-green-500 rounded hover:bg-green-600">Edit</button><button
+                                class="px-2 py-1 text-sm font-medium text-white bg-red-500 rounded hover:bg-red-600">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="rounded-lg border bg-card text-card-foreground shadow-sm"
+                 data-v0-t="card">
+                <div class="flex flex-col space-y-1.5 p-6">
+                    <h2 class="text-2xl font-semibold">Team C vs Team D</h2>
+                    <p class="text-gray-500">Date: 26th December, 2023</p>
+                </div>
+                <div class="p-6">
+                    <p>Prediction Odds: 1.5:1</p>
+                    <div class="flex justify-between mt-4"><button onclick="window.myDialog.showModal()"
+                                class="px-2 py-1 text-sm font-medium text-white bg-green-500 rounded hover:bg-green-600">Edit</button><button
+                                class="px-2 py-1 text-sm font-medium text-white bg-red-500 rounded hover:bg-red-600">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="rounded-lg border bg-card text-card-foreground shadow-sm"
+                 data-v0-t="card">
+                <div class="flex flex-col space-y-1.5 p-6">
+                    <h2 class="text-2xl font-semibold">Team E vs Team F</h2>
+                    <p class="text-gray-500">Date: 27th December, 2023</p>
+                </div>
+                <div class="p-6">
+                    <p>Prediction Odds: 3:1</p>
+                    <div class="flex justify-between mt-4"><button onclick="window.myDialog.showModal()"
+                                class="px-2 py-1 text-sm font-medium text-white bg-green-500 rounded hover:bg-green-600">Edit</button><button
+                                class="px-2 py-1 text-sm font-medium text-white bg-red-500 rounded hover:bg-red-600">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="rounded-lg border bg-card text-card-foreground shadow-sm"
+                 data-v0-t="card">
+                <div class="flex flex-col space-y-1.5 p-6">
+                    <h2 class="text-2xl font-semibold">Team G vs Team H</h2>
+                    <p class="text-gray-500">Date: 28th December, 2023</p>
+                </div>
+                <div class="p-6">
+                    <p>Prediction Odds: 2.3:1</p>
+                    <div class="flex justify-between mt-4"><button onclick="window.myDialog.showModal()"
+                                class="px-2 py-1 text-sm font-medium text-white bg-green-500 rounded hover:bg-green-600">Edit</button><button
+                                class="px-2 py-1 text-sm font-medium text-white bg-red-500 rounded hover:bg-red-600">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<dialog id="myDialog">
+    <div class="fixed inset-0 flex items-center justify-center">
+        <div class="absolute inset-0 bg-gray-500 opacity-50"></div>
+        <div class="relative p-6 bg-white w-96 mx-auto rounded shadow-lg">
+            <h2 class="text-2xl font-semibold mb-4">Edit Match</h2>
+            <form>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2"
+                           for="team1">
+                        Team 1 </label><input
+                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                           id="team1"
+                           placeholder="Team A"
+                           type="text" />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2"
+                           for="team2">
+                        Team 2 </label><input
+                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                           id="team2"
+                           type="text"
+                           placeholder="Team B" />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2"
+                           for="date">
+                        Date </label><input
+                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                           id="date"
+                           type="date" />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2"
+                           for="odds">
+                        Prediction Odds </label><input
+                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                           id="odds"
+                           placeholder="2.5:1"
+                           type="text" />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2"
+                           for="body">
+                        Match Details </label><textarea
+                              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                              id="body"></textarea>
+                </div>
+                <div class="flex items-center justify-between">
+                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                            type="submit">
+                        Save</button><button onclick="window.myDialog.close()"
+                            class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                            type="button">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</dialog>
+{{end}}

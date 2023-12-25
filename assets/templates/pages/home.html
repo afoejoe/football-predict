@@ -1,5 +1,211 @@
-{{define "page:title"}}Example page{{end}}
+{{define "page:title"}}Home title{{end}}
 
 {{define "page:main"}}
-<p>This is an example page.</p>
+<section class="w-full lg:py-24 pb-12 pt-6 bg-gray-200">
+    <div class="px-4 md:px-6 space-y-10 xl:space-y-16">
+        <div class="grid max-w-[1300px] mx-auto gap-4 px-4 sm:px-6 md:px-10 md:grid-cols-2 md:gap-16">
+            <div>
+                <h1
+                    class="lg:leading-tighter text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl xl:text-[3.4rem] 2xl:text-[3.75rem]">
+                    Welcome to Sport Betting Predictions
+                </h1>
+            </div>
+            <div class="flex flex-col items-start space-y-4">
+                <p class="mx-auto max-w-[700px] text-gray-500 md:text-xl">
+                    Get latest updates on upcoming matches, detailed team information and odds. Track your
+                    predictions and
+                    performance in your profile.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="w-full py-12 md:py-12"
+         id="predictions">
+    <div class="container mx-auto space-y-12 px-4 md:px-6">
+        <div class="flex flex-col items-center justify-center space-y-4">
+            <div class="space-y-2 w-full">
+                <div class="w-full block">
+
+                    <div class="rounded-lg bg-gray-100 px-3 py-1 text-sm mx-auto w-fit">
+                        Predictions
+                    </div>
+                </div>
+                <section class="my-12">
+                    <h2 class="text-2xl font-bold mb-4">Featured Games</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <a href="/prediction/slug"
+                           rel="ugc">
+                            <div class="rounded-lg border bg-card text-card-foreground shadow-sm"
+                                 data-v0-t="card">
+                                <div class="flex flex-col space-y-1.5 p-6">
+                                    <h3 class="hover:underline text-xl font-semibold">Team A vs Team B</h3>
+                                </div>
+                                <div class="p-6">
+                                    <p class="text-sm">Time: 15:30</p>
+                                    <p class="text-sm mt-2">Odds: 2.5</p>
+                                </div>
+                            </div>
+                        </a><a href="/prediction/slug"
+                           rel="ugc">
+                            <div class="rounded-lg border bg-card text-card-foreground shadow-sm"
+                                 data-v0-t="card">
+                                <div class="flex flex-col space-y-1.5 p-6">
+                                    <h3 class="hover:underline text-xl font-semibold">Team C vs Team D</h3>
+                                </div>
+                                <div class="p-6">
+                                    <p class="text-sm">Time: 15:30</p>
+                                    <p class="text-sm mt-2">Odds: 1.8</p>
+                                </div>
+                            </div>
+                        </a><a href="/prediction/slug"
+                           rel="ugc">
+                            <div class="rounded-lg border bg-card text-card-foreground shadow-sm"
+                                 data-v0-t="card">
+                                <div class="flex flex-col space-y-1.5 p-6">
+                                    <h3 class="hover:underline text-xl font-semibold">Team E vs Team F</h3>
+                                </div>
+                                <div class="p-6">
+                                    <p class="text-sm">Time: 15:30</p>
+                                    <p class="text-sm mt-2">Odds: 3.2</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </section>
+                <section class="my-12">
+                    <h2 class="text-2xl font-bold mb-4">Upcoming Games</h2>
+                    <table class="w-full table-auto">
+                        <thead>
+                            <tr>
+                                <th class="px-4 py-2 text-left">Game</th>
+                                <th class="px-4 py-2 text-left">Date</th>
+                                <th class="px-4 py-2 text-left">Odds</th>
+                                <th class="px-4 py-2 text-left">Prediction</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="border px-4 py-2"><a class="hover:underline"
+                                       href="/prediction/slug"
+                                       rel="ugc">
+                                        Team G vs Team H
+                                    </a></td>
+                                <td class="border px-4 py-2">31/12 15:30</td>
+                                <td class="border px-4 py-2">1.9</td>
+                                <td class="border px-4 py-2">UNDER 4.5</td>
+                            </tr>
+                            <tr>
+                                <td class="border px-4 py-2"><a class="hover:underline"
+                                       href="/prediction/slug"
+                                       rel="ugc">
+                                        Team I vs Team J
+                                    </a></td>
+                                <td class="border px-4 py-2">01/01 15:30</td>
+                                <td class="border px-4 py-2">2.1</td>
+                                <td class="border px-4 py-2">OVER 2.5</td>
+                            </tr>
+                            <tr>
+                                <td class="border px-4 py-2"><a class="hover:underline"
+                                       href="/prediction/slug"
+                                       rel="ugc">
+                                        Team K vs Team L
+                                    </a></td>
+                                <td class="border px-4 py-2">02/01 15:30</td>
+                                <td class="border px-4 py-2">1.8</td>
+                                <td class="border px-4 py-2">BTTS YES</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+            </div>
+        </div>
+        <div class="mx-auto grid items-start gap-8 sm:max-w-4xl sm:grid-cols-2 md:gap-12 lg:max-w-5xl lg:grid-cols-3">
+        </div>
+    </div>
+</section>
+<section class="w-full py-12"
+         id="user_profile">
+    <div class="container mx-auto px-4 md:px-6">
+        <div class="flex flex-col items-center justify-center space-y-4 text-center">
+            <div class="space-y-2">
+                <div class="inline-block rounded-lg bg-gray-100 px-3 py-1 text-sm ">
+                    User Profile
+                </div>
+                <h2 class="text-3xl font-bold tracking-tighter sm:text-5xl">
+                    Track your predictions and performance
+                </h2>
+                <p class="max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                    View your past predictions, track your current predictions, and see your overall
+                    performance
+                    on your
+                    profile.
+                </p>
+            </div>
+        </div>
+        <div class="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-2 lg:gap-12">
+            <div class="rounded-lg border bg-card text-card-foreground shadow-sm"
+                 data-v0-t="card">
+                <div class="flex flex-col space-y-1.5 p-6">
+                    <h3 class="text-xl font-bold">Your Predictions</h3>
+                </div>
+                <div class="p-6">
+                    <p class="text-sm text-gray-500">
+                        Check out your latest predictions and see how you're doing.
+                    </p>
+                </div>
+                <div class="flex items-center p-6"><button
+                            class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">Coming
+                        Soon</button></div>
+            </div>
+            <div class="rounded-lg border bg-card text-card-foreground shadow-sm"
+                 data-v0-t="card">
+                <div class="flex flex-col space-y-1.5 p-6">
+                    <h3 class="text-xl font-bold">Your Performance</h3>
+                </div>
+                <div class="p-6">
+                    <p class="text-sm text-gray-500">
+                        See your overall performance and track your progress.
+                    </p>
+                </div>
+                <div class="flex items-center p-6"><button
+                            class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">Coming
+                        Soon</button></div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="w-full py-12 pb-24 lg:py-32"
+         id="newsletter">
+    <div class="container mx-auto px-4 md:px-6">
+        <div class="flex flex-col items-center justify-center space-y-4 text-center">
+            <div class="space-y-2">
+                <div class="inline-block rounded-lg bg-gray-100 px-3 py-1 text-sm ">
+                    Newsletter
+                </div>
+                <h2 class="text-3xl font-bold tracking-tighter sm:text-5xl">Stay updated with our newsletter
+                </h2>
+                <p class="max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                    Subscribe to our newsletter for the latest updates and predictions.
+                </p>
+            </div>
+        </div>
+        <div class="mx-auto max-w-5xl items-center gap-6 py-12">
+            <div class="flex flex-col w-full bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="px-6 py-4">
+                    <h3 class="text-xl font-bold">Subscribe</h3>
+                    <p class="mt-2 text-sm text-gray-500">Enter your email address to subscribe to our
+                        newsletter.</p>
+                </div>
+                <div class="px-6 py-4 flex items-center space-x-4">
+                    <input class="w-full px-4 py-2 border rounded-md text-gray-700"
+                           placeholder="Your email"
+                           type="email">
+                    <button
+                            class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">Subscribe</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 {{end}}

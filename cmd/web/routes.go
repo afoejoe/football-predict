@@ -16,8 +16,11 @@ func (app *application) routes() http.Handler {
 	mux.Handler("GET", "/static/*filepath", fileServer)
 
 	mux.HandlerFunc("GET", "/", app.home)
+	mux.HandlerFunc("GET", "/admin", app.admin)
 
-	mux.Handler("GET", "/basic-auth-protected", app.requireBasicAuthentication(http.HandlerFunc(app.protected)))
+	mux.HandlerFunc("GET", "/prediction/:slug", app.single)
+
+	// mux.Handler("GET", "/basic-auth-protected", app.requireBasicAuthentication(http.HandlerFunc(app.protected)))
 
 	return app.logAccess(app.recoverPanic(app.securityHeaders(mux)))
 }

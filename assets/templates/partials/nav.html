@@ -1,6 +1,23 @@
 {{define "partial:nav"}}
-<nav>
-    <a href="#">Example link</a>
-    <a href="#">Example link</a>
+<a class="flex items-center justify-center"
+   href="/"
+   rel="ugc">
+    <span class="text-lg font-bold">Sport Predict</span>
+</a>
+<nav class="ml-auto flex gap-4 sm:gap-6 overflow-x-auto scrollbar-hide">
+    <a class="text-sm font-medium hover:underline underline-offset-4"
+       href="/#predictions"
+       rel="ugc">
+        Predictions
+    </a>
+    <a class="text-sm font-medium hover:underline underline-offset-4"
+       href="/#user_profile"
+       rel="ugc">
+        Profile
+    </a>
+    <a class="text-sm font-medium hover:underline underline-offset-4"
+       href="/#newsletter">
+        Newsletter
+    </a>
 </nav>
 {{end}}
