@@ -40,8 +40,8 @@ jobs:
           touch .envrc
           echo DEV_DB_DSN=${{ secrets.DEV_DB_DSN }} >> .envrc
           echo DEV_HTTP_PORT=${{ secrets.DEV_HTTP_PORT }} >> .envrc
-          echo basic-auth-hashed-password"=${{ secrets.basic-auth-hashed-password" }} >> .envrc
-          echo notifications-email=${{ secrets.notifications-email }} >> .envrc
+          echo basic-auth-hashed-password"=${{ secrets.basic_auth_hashed_password" }} >> .envrc
+          echo notifications-email=${{ secrets.notifications_email }} >> .envrc
           cat .envrc
 
       # - name: Set up SSH
