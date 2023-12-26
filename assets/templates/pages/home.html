@@ -31,48 +31,31 @@
                         Predictions
                     </div>
                 </div>
+                {{with .Featured}}
                 <section class="my-12">
                     <h2 class="text-2xl font-bold mb-4">Featured Games</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        <a href="/prediction/slug"
+                        {{range .}}
+                        <a href="/prediction/{{.Slug}}"
                            rel="ugc">
                             <div class="rounded-lg border bg-card text-card-foreground shadow-sm"
                                  data-v0-t="card">
                                 <div class="flex flex-col space-y-1.5 p-6">
-                                    <h3 class="hover:underline text-xl font-semibold">Team A vs Team B</h3>
+                                    <h3 class="hover:underline text-xl font-semibold">
+                                        {{.Title}}
+                                    </h3>
                                 </div>
                                 <div class="p-6">
-                                    <p class="text-sm">Time: 15:30</p>
-                                    <p class="text-sm mt-2">Odds: 2.5</p>
-                                </div>
-                            </div>
-                        </a><a href="/prediction/slug"
-                           rel="ugc">
-                            <div class="rounded-lg border bg-card text-card-foreground shadow-sm"
-                                 data-v0-t="card">
-                                <div class="flex flex-col space-y-1.5 p-6">
-                                    <h3 class="hover:underline text-xl font-semibold">Team C vs Team D</h3>
-                                </div>
-                                <div class="p-6">
-                                    <p class="text-sm">Time: 15:30</p>
-                                    <p class="text-sm mt-2">Odds: 1.8</p>
-                                </div>
-                            </div>
-                        </a><a href="/prediction/slug"
-                           rel="ugc">
-                            <div class="rounded-lg border bg-card text-card-foreground shadow-sm"
-                                 data-v0-t="card">
-                                <div class="flex flex-col space-y-1.5 p-6">
-                                    <h3 class="hover:underline text-xl font-semibold">Team E vs Team F</h3>
-                                </div>
-                                <div class="p-6">
-                                    <p class="text-sm">Time: 15:30</p>
-                                    <p class="text-sm mt-2">Odds: 3.2</p>
+                                    <p class="text-sm">Time: {{.ScheduledAt | formatTime "Jan 2, 2006 at 3:04 pm"}}
+                                    </p>
+                                    <p class="text-sm mt-2">Odds: {{formatFloat .Odds 2}}</p>
                                 </div>
                             </div>
                         </a>
+                        {{end}}
                     </div>
                 </section>
+                {{end}}
                 <section class="my-12">
                     <h2 class="text-2xl font-bold mb-4">Upcoming Games</h2>
                     <table class="w-full table-auto">
@@ -85,36 +68,41 @@
                             </tr>
                         </thead>
                         <tbody>
+                            {{with .Predictions}}
+                            {{range .}}
                             <tr>
                                 <td class="border px-4 py-2"><a class="hover:underline"
-                                       href="/prediction/slug"
+                                       href="/prediction/{{.Slug}}"
                                        rel="ugc">
-                                        Team G vs Team H
+                                        {{.Title}}
                                     </a></td>
-                                <td class="border px-4 py-2">31/12 15:30</td>
-                                <td class="border px-4 py-2">1.9</td>
-                                <td class="border px-4 py-2">UNDER 4.5</td>
+                                <td class="border px-4 py-2">
+                                    {{.ScheduledAt | formatTime "02/01 15:04"}}
+                                </td>
+                                <td class="border px-4 py-2">
+                                    {{formatFloat .Odds 2}}
+                                </td>
+                                <td class="border px-4 py-2">
+                                    {{.PredictionType}}
+                                </td>
                             </tr>
+                            {{end}}
+                            {{else}}
                             <tr>
-                                <td class="border px-4 py-2"><a class="hover:underline"
-                                       href="/prediction/slug"
-                                       rel="ugc">
-                                        Team I vs Team J
-                                    </a></td>
-                                <td class="border px-4 py-2">01/01 15:30</td>
-                                <td class="border px-4 py-2">2.1</td>
-                                <td class="border px-4 py-2">OVER 2.5</td>
+                                <td class="border px-4 py-2">
+                                    -
+                                </td>
+                                <td class="border px-4 py-2">
+                                    -
+                                </td>
+                                <td class="border px-4 py-2">
+                                    -
+                                </td>
+                                <td class="border px-4 py-2">
+                                    -
+                                </td>
                             </tr>
-                            <tr>
-                                <td class="border px-4 py-2"><a class="hover:underline"
-                                       href="/prediction/slug"
-                                       rel="ugc">
-                                        Team K vs Team L
-                                    </a></td>
-                                <td class="border px-4 py-2">02/01 15:30</td>
-                                <td class="border px-4 py-2">1.8</td>
-                                <td class="border px-4 py-2">BTTS YES</td>
-                            </tr>
+                            {{end}}
                         </tbody>
                     </table>
                 </section>
