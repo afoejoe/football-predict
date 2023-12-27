@@ -4,6 +4,7 @@ import (
 	"log/slog"
 	"net/http"
 	"runtime/debug"
+	"strings"
 )
 
 func (app *application) reportServerError(r *http.Request, err error) {
@@ -53,4 +54,8 @@ func (app *application) basicAuthenticationRequired(w http.ResponseWriter, r *ht
 
 	message := "You must be authenticated to access this resource"
 	http.Error(w, message, http.StatusUnauthorized)
+}
+
+func (app *application) failedValidationResponse(w http.ResponseWriter, r *http.Request, errors []string) {
+	http.Error(w, strings.Join(errors, ", "), http.StatusUnprocessableEntity)
 }

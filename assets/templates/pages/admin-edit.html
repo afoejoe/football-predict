@@ -1,0 +1,65 @@
+{{define "page:title"}}Example page{{end}}
+
+{{define "page:main"}}
+
+<section class="w-full p-4 space-y-8">
+    <div class="flex justify-between items-center">
+        <h1 class="text-3xl font-bold">Edit Match</h1>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <form class="md:col-span-2">
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2"
+                       for="teams">
+                    Teams </label><input
+                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                       id="teams"
+                       placeholder="Team A vs Team B"
+                       type="text" />
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2"
+                       for="date">
+                    Date </label><input
+                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                       id="date"
+                       type="date" />
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2"
+                       for="odds">
+                    Prediction Odds </label><input
+                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                       id="odds"
+                       placeholder="2.5:1"
+                       type="text" />
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2"
+                       for="isArchived">
+                    Is Archived </label><input id="isArchived"
+                       type="checkbox"
+                       value="isArchived"
+                       name="isArchived" />
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2"
+                       for="isFeatured">
+                    Is Featured </label><input id="isFeatured"
+                       type="checkbox"
+                       value="isFeatured"
+                       name="isFeatured" />
+            </div>
+            <div class="flex items-center justify-between">
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                        type="submit">
+                    Save</button><button
+                        class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                        type="button">
+                    Cancel
+                </button>
+            </div>
+        </form>
+    </div>
+</section>
+{{end}}

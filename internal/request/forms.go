@@ -4,6 +4,7 @@ import (
 	"errors"
 	"net/http"
 	"net/url"
+	"time"
 
 	"github.com/go-playground/form/v4"
 )
@@ -33,7 +34,12 @@ func DecodeQueryString(r *http.Request, dst any) error {
 }
 
 func decodeURLValues(v url.Values, dst any) error {
+	decoder.RegisterCustomTypeFunc(func(vals []string) (interface{}, error) {
+		return time.Parse("2006-01-02T15:04", vals[0])
+	}, time.Time{})
+
 	err := decoder.Decode(dst, v)
+
 	if err != nil {
 		var invalidDecoderError *form.InvalidDecoderError
 

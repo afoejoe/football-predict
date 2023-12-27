@@ -13,7 +13,7 @@ import (
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	data := app.newTemplateData(r)
 
-	predictions, err := app.db.GetPredictions()
+	predictions, err := app.db.GetPredictions(false)
 	if err != nil {
 		app.serverError(w, r, err)
 		return
@@ -30,7 +30,6 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	// data["Predictions"] = []*database.Prediction{}
 	data["Predictions"] = predictions
 	data["Featured"] = featured
 
@@ -45,9 +44,9 @@ func (app *application) single(w http.ResponseWriter, r *http.Request) {
 
 	params := httprouter.ParamsFromContext(r.Context())
 	slug := params.ByName("slug")
-	
+
 	if slug == "" {
-		app.serverError(w, r, errors.New("No slug provided"))
+		app.serverError(w, r, errors.New("no slug provided"))
 		return
 	}
 
@@ -73,7 +72,15 @@ func (app *application) single(w http.ResponseWriter, r *http.Request) {
 func (app *application) admin(w http.ResponseWriter, r *http.Request) {
 	data := app.newTemplateData(r)
 
-	err := response.Page(w, http.StatusOK, data, "pages/admin-home.html")
+	predictions, err := app.db.GetPredictions(true)
+
+	if err != nil {
+		app.serverError(w, r, err)
+		return
+	}
+
+	data["Predictions"] = predictions
+	err = response.Page(w, http.StatusOK, data, "pages/admin-home.html")
 	if err != nil {
 		app.serverError(w, r, err)
 	}

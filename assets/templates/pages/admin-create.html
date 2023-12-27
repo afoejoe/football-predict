@@ -1,0 +1,130 @@
+{{define "page:title"}}Example page{{end}}
+
+{{define "page:main"}}
+
+<section class="w-full p-4 space-y-8">
+    <div class="flex justify-between items-center">
+        <h1 class="text-3xl font-bold">Create Prediction</h1>
+
+        <a href="/admin">
+            Go
+            Back</a>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <form class="md:col-span-2"
+              method="post"
+              action="/admin/create">
+            {{if .Form.Validator.HasErrors}}
+            <p id="error">Something was wrong. Please correct the errors below and try again.</p>
+            {{end}}
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2"
+                       for="teams">
+                    Teams </label>
+                {{with .Form.Validator.FieldErrors.Title}}
+                <span class='error'>{{.}}</span>
+                {{end}}
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                       id="teams"
+                       placeholder="Team A vs Team B"
+                       type="text"
+                       name="title"
+                       value={{.Form.Title}} />
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2"
+                       for="prediction-type">
+                    Prediction Type </label><input
+                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                       id="prediction-type"
+                       placeholder="over 1.5"
+                       type="text"
+                       name="prediction_type"
+                       value={{.Form.PredictionType}} />
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2"
+                       for="scheduled_at">
+                    Scheduled Time </label><input
+                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                       id="scheduled_at"
+                       type="datetime-local"
+                       name="scheduled_at"
+                       value={{.Form.ScheduledAt}} />
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2"
+                       for="odds">
+                    Prediction Odds </label><input
+                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                       id="odds"
+                       placeholder="2.5:1"
+                       type="text"
+                       name="odds"
+                       value={{.Form.Odds}} />
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2"
+                       for="body">
+                    Match Details </label><textarea
+                          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                          id="body"
+                          name="body">{{.Form.Body}}</textarea>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2"
+                       for="keywords">
+                    SEO Keywords </label><textarea
+                          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                          id="keywords"
+                          name="keywords">{{.Form.Keywords}}</textarea>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2"
+                       for="isArchived">
+                    Is Archived </label><input id="isArchived"
+                       type="checkbox"
+                       name="is_archived"
+                       checked={{.Form.IsArchived}} />
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2"
+                       for="isFeatured">
+                    Is Featured </label><input id="isFeatured"
+                       type="checkbox"
+                       name="is_featured"
+                       checked={{.Form.IsFeatured}} />
+            </div>
+            <div class="flex items-center justify-between">
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                        type="submit">
+                    Save</button><button
+                        class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                        type="button">
+                    Delete
+                </button>
+            </div>
+        </form>
+    </div>
+</section>
+{{end}}
+<script>
+    document.addEventListener('htmx:afterSwap', function (event) {
+        var response = event.detail.xhr.response;
+        var statusCode = event.detail.xhr.status;
+
+        // Check if the response status code indicates an error
+        if (statusCode !== 200) {
+            // Display the error message to the user
+            var errorMessage = response.error; // Assuming the error message is included in the response payload
+            showError(errorMessage);
+        }
+    });
+
+    function showError(message) {
+        // Display the error message to the user
+        // This could be done by showing an element with the error message or displaying a notification
+        // Example: document.getElementById('error-message').textContent = message;
+        console.log('Error:', message);
+    }
+</script>
