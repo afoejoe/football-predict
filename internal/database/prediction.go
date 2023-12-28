@@ -8,7 +8,7 @@ import (
 )
 
 type Prediction struct {
-	ID             int       `json:"id"`
+	ID             int64     `json:"id"`
 	Title          string    `json:"title"`
 	Slug           string    `json:"slug"`
 	Keywords       string    `json:"keywords"`
@@ -96,6 +96,31 @@ func (db *DB) GetFeatured() ([]*Prediction, error) {
 	return predictions, nil
 }
 
+func (db *DB) GetPrediction(id int64) (*Prediction, error) {
+	stmt := `
+	SELECT
+		id, title, slug, body, created_at, scheduled_at, odds, prediction_type, is_featured, is_archived, keywords
+	FROM prediction
+	WHERE id = $1
+	`
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	row := db.QueryRowContext(ctx, stmt, id)
+
+	p := &Prediction{}
+
+	err := row.Scan(&p.ID, &p.Title, &p.Slug, &p.Body, &p.CreatedAt, &p.ScheduledAt, &p.Odds, &p.PredictionType, &p.IsFeatured, &p.IsArchived, &p.Keywords)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, ErrPredictionNotFound
+		}
+		return nil, err
+	}
+
+	return p, nil
+}
+
 func (db *DB) GetPredictionBySlug(slug string) (*Prediction, error) {
 	stmt := `
 	SELECT id, title, slug, body, created_at, scheduled_at, odds, prediction_type
@@ -134,6 +159,47 @@ func (db *DB) InsertPrediction(p *Prediction) error {
 
 	arg := []interface{}{p.Title, p.Slug, p.Body, p.CreatedAt, p.ScheduledAt, p.Odds, p.PredictionType, p.IsArchived, p.IsFeatured, p.Keywords}
 	err := db.QueryRowContext(ctx, stmt, arg...).Scan(&p.ID)
+
+	return err
+}
+
+func (db *DB) UpdatePrediction(p *Prediction) error {
+	stmt := `
+	UPDATE prediction SET
+		title = $1,
+		slug = $2,
+		body = $3,
+		created_at = $4,
+		scheduled_at = $5,
+		odds = $6,
+		prediction_type = $7,
+		is_archived = $8,
+		is_featured = $9,
+		keywords = $10
+	WHERE id = $11
+	RETURNING id
+	`
+
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	arg := []interface{}{p.Title, p.Slug, p.Body, p.CreatedAt, p.ScheduledAt, p.Odds, p.PredictionType, p.IsArchived, p.IsFeatured, p.Keywords, p.ID}
+
+	err := db.QueryRowContext(ctx, stmt, arg...).Scan(&p.ID)
+
+	return err
+}
+
+func (db *DB) DeletePrediction(id int64) error {
+	stmt := `
+	DELETE FROM prediction
+	WHERE id = $1
+	`
+
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	_, err := db.ExecContext(ctx, stmt, id)
 
 	return err
 }

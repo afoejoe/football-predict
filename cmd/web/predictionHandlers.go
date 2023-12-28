@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/afoejoe/football-predict/internal/database"
@@ -15,6 +16,7 @@ import (
 )
 
 type PredictionForm struct {
+	ID             int64               `form:"id"`
 	Title          string              `form:"title"`
 	Body           string              `form:"body"`
 	Keywords       string              `form:"keywords"`
@@ -29,7 +31,7 @@ type PredictionForm struct {
 func (app *application) editOrCreatePrediction(w http.ResponseWriter, r *http.Request) {
 	data := app.newTemplateData(r)
 	params := httprouter.ParamsFromContext(r.Context())
-	slug := params.ByName("slug")
+	slug := params.ByName("id")
 
 	if slug == "" {
 		app.badRequest(w, r, errors.New("no slug provided"))
@@ -47,32 +49,47 @@ func (app *application) editOrCreatePrediction(w http.ResponseWriter, r *http.Re
 		return
 	}
 
-	prediction, err := app.db.GetPredictionBySlug(slug)
+	id, err := strconv.Atoi(slug)
+	if err != nil {
+		app.badRequest(w, r, err)
+		return
+	}
+
+	prediction, err := app.db.GetPrediction(int64(id))
 
 	if err != nil {
 		app.serverError(w, r, err)
 		return
 	}
 
-	data["Form"] = prediction
-	err = response.Page(w, http.StatusOK, data, "pages/admin-edit.html")
+	// prediction = validator.Validator{}
+
+	data["Form"] = PredictionForm{
+		ID:             prediction.ID,
+		Title:          prediction.Title,
+		Body:           prediction.Body,
+		Keywords:       prediction.Keywords,
+		ScheduledAt:    time.Now(),
+		Odds:           prediction.Odds,
+		PredictionType: prediction.PredictionType,
+		IsFeatured:     prediction.IsFeatured,
+		IsArchived:     prediction.IsArchived,
+	}
+	//convert prediction to PredictionForm
+
+	err = response.Page(w, http.StatusOK, data, "pages/admin-create.html")
 	if err != nil {
 		app.serverError(w, r, err)
 	}
 }
 
 func (app *application) createPredictionPost(w http.ResponseWriter, r *http.Request) {
-	// data := app.newTemplateData(r)
-	// data["Form"] = database.Prediction{}
-
 	form := PredictionForm{}
 	err := request.DecodePostForm(r, &form)
 
 	if err != nil {
 		fmt.Println(err)
 		app.badRequest(w, r, err)
-		// set header here
-		w.Header().Set("HX-Retarget", "error")
 		return
 	}
 
@@ -101,14 +118,34 @@ func (app *application) createPredictionPost(w http.ResponseWriter, r *http.Requ
 		Slug:           funcs.Slugify(form.Title),
 	}
 
-	fmt.Println(p)
-	err = app.db.InsertPrediction(p)
+	if form.ID != 0 {
+		p.ID = form.ID
+		err = app.db.UpdatePrediction(p)
+	} else {
+		err = app.db.InsertPrediction(p)
+	}
 
 	if err != nil {
 		app.serverError(w, r, err)
 		return
 	}
 
+	http.Redirect(w, r, "/admin", http.StatusSeeOther)
+}
+
+func (app *application) deletePrediction(w http.ResponseWriter, r *http.Request) {
+	params := httprouter.ParamsFromContext(r.Context())
+	id, err := strconv.Atoi(params.ByName("id"))
+	if err != nil || id < 1 {
+		app.notFound(w, r)
+		return
+	}
+
+	err = app.db.DeletePrediction(int64(id))
+	if err != nil {
+		app.serverError(w, r, err)
+		return
+	}
 	http.Redirect(w, r, "/admin", http.StatusSeeOther)
 }
 

@@ -5,18 +5,19 @@
 <section class="w-full p-4 space-y-8">
     <div class="flex justify-between items-center">
         <h1 class="text-3xl font-bold">Create Prediction</h1>
-
-        <a href="/admin">
-            Go
-            Back</a>
+        <a href="/admin">Go Back</a>
     </div>
+
     <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
         <form class="md:col-span-2"
               method="post"
-              action="/admin/create">
+              action="/admin/prediction">
             {{if .Form.Validator.HasErrors}}
             <p id="error">Something was wrong. Please correct the errors below and try again.</p>
             {{end}}
+            <input type="hidden"
+                   name="id"
+                   value={{.Form.ID}}>
             <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2"
                        for="teams">
@@ -50,7 +51,10 @@
                        id="scheduled_at"
                        type="datetime-local"
                        name="scheduled_at"
-                       value={{.Form.ScheduledAt}} />
+                       value={{.Form.ScheduledAt
+                       |
+                       formatTime "2006-01-02T15:04"
+                       }} />
             </div>
             <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2"
@@ -85,7 +89,12 @@
                     Is Archived </label><input id="isArchived"
                        type="checkbox"
                        name="is_archived"
-                       checked={{.Form.IsArchived}} />
+                       {{if
+                       eq
+                       .Form.IsArchived
+                       true
+                       }}
+                       checked{{end}} />
             </div>
             <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2"
@@ -93,38 +102,29 @@
                     Is Featured </label><input id="isFeatured"
                        type="checkbox"
                        name="is_featured"
-                       checked={{.Form.IsFeatured}} />
+                       {{if
+                       eq
+                       .Form.IsFeatured
+                       true
+                       }}
+                       checked{{end}} />
             </div>
             <div class="flex items-center justify-between">
                 <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                         type="submit">
-                    Save</button><button
+                    Save</button>
+                {{if .Form.ID}}
+                <button hx-delete="/admin/prediction/{{.Form.ID}}"
+                        hx-target="body"
+                        hx-push-url="true"
+                        hx-confirm="Are you sure?"
                         class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                         type="button">
                     Delete
                 </button>
+                {{end}}
             </div>
         </form>
     </div>
 </section>
 {{end}}
-<script>
-    document.addEventListener('htmx:afterSwap', function (event) {
-        var response = event.detail.xhr.response;
-        var statusCode = event.detail.xhr.status;
-
-        // Check if the response status code indicates an error
-        if (statusCode !== 200) {
-            // Display the error message to the user
-            var errorMessage = response.error; // Assuming the error message is included in the response payload
-            showError(errorMessage);
-        }
-    });
-
-    function showError(message) {
-        // Display the error message to the user
-        // This could be done by showing an element with the error message or displaying a notification
-        // Example: document.getElementById('error-message').textContent = message;
-        console.log('Error:', message);
-    }
-</script>

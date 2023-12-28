@@ -4,9 +4,10 @@
 <section class="w-full p-4 space-y-8">
     <div class="flex justify-between items-center">
         <h1 class="text-3xl font-bold">Admin Panel</h1>
-        <a href="/admin/new"
+        <a href="/admin/prediction/new"
            class="px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded hover:bg-blue-600">Add New</a>
     </div>
+
     <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
         {{with .Predictions}}
         {{range .}}
@@ -17,12 +18,14 @@
                     <h2 class="text-2xl font-semibold">{{.Title}}</h2>
                     <p class="text-gray-500">Date: {{.ScheduledAt | formatTime "Jan 2, 2006 at 3:04 pm"}}</p>
                 </div>
+
                 <div class="p-6">
                     <p>Prediction Odds: {{formatFloat .Odds 2}}</p>
-                    <div class="flex justify-between mt-4"><a href="/admin/{{.Slug}}"
-                           class="px-2 py-1 text-sm font-medium text-white bg-green-500 rounded hover:bg-green-600">Edit</a>
-                        <!-- <button
-                                class="px-2 py-1 text-sm font-medium text-white bg-red-500 rounded hover:bg-red-600">Delete</button> -->
+                    <div class="flex justify-between mt-4">
+                        <a href="/admin/prediction/{{.ID}}"
+                           class="px-2 py-1 text-sm font-medium text-white bg-green-500 rounded hover:bg-green-600">
+                            Edit
+                        </a>
                     </div>
                 </div>
             </div>
@@ -33,67 +36,4 @@
         {{end}}
     </div>
 </section>
-
-<!-- <dialog id="myDialog">
-    <div class="fixed inset-0 flex items-center justify-center">
-        <div class="absolute inset-0 bg-gray-500 opacity-50"></div>
-        <div class="relative p-6 bg-white w-96 mx-auto rounded shadow-lg">
-            <h2 class="text-2xl font-semibold mb-4">Edit Match</h2>
-            <form method="post"
-                  action="/prediction">
-                {{if .Form.Validator.HasErrors}}
-                <p>Something was wrong. Please correct the errors below and try again.</p>
-                {{end}}
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2"
-                           for="title">
-                        Team 1 </label>
-                    {{with .Form.Validator.FieldErrors.Title}}
-                    <span class='error'>{{.}}</span>
-                    {{end}}
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                           id="title"
-                           placeholder="Team A VS Team B"
-                           type="text"
-                           name="title"
-                           value="{{.Form.Title}}" />
-                </div>
-
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2"
-                           for="date">
-                        Date </label><input
-                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                           id="date"
-                           type="date" />
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2"
-                           for="odds">
-                        Prediction Odds </label><input
-                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                           id="odds"
-                           placeholder="2.5:1"
-                           type="text" />
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2"
-                           for="body">
-                        Match Details </label><textarea
-                              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                              id="body"></textarea>
-                </div>
-                <div class="flex items-center justify-between">
-                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                            type="submit">
-                        Save</button><button onclick="window.myDialog.close()"
-                            class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                            type="button">
-                        Cancel
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</dialog> -->
 {{end}}
