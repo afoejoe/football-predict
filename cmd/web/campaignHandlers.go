@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"context"
-	"fmt"
 	"net/http"
 	"strconv"
 	"text/template"
@@ -62,8 +61,6 @@ func (app *application) sendCampaign(w http.ResponseWriter, r *http.Request) {
 	params := httprouter.ParamsFromContext(r.Context())
 
 	id, err := strconv.Atoi(params.ByName("id"))
-	fmt.Println(err, id)
-
 	if err != nil || id < 1 {
 		app.notFound(w, r)
 		return
@@ -73,16 +70,17 @@ func (app *application) sendCampaign(w http.ResponseWriter, r *http.Request) {
 	defer cancel()
 
 	_, _, err = app.brevoClient.EmailCampaignsApi.GetEmailCampaign(ctx, int64(4), &lib.GetEmailCampaignOpts{})
-	// fmt.Println(c)
+	if err != nil {
+		app.serverError(w, r, err)
+		return
+	}
+
 	s := &lib.CreateEmailCampaignSender{
-		Name:  "MyName",
+		Name:  "Sport Predict",
 		Email: "newsletter@naijarank.com",
 	}
 
-	// html string content from template emails/example.html file
-
 	prediction, err := app.db.GetPrediction(int64(id))
-
 	if err != nil {
 		app.serverError(w, r, err)
 		return
@@ -91,20 +89,16 @@ func (app *application) sendCampaign(w http.ResponseWriter, r *http.Request) {
 	filePath := "assets/emails/prediction.html"
 	tmpl, err := template.ParseFiles(filePath)
 	if err != nil {
-		fmt.Println(err, "Error3")
-
 		app.serverError(w, r, err)
 		return
 	}
 
 	var tpl bytes.Buffer
 	if err := tmpl.Execute(&tpl, prediction); err != nil {
-		fmt.Println(err, "Error2")
 		app.serverError(w, r, err)
 		return
 	}
 
-	fmt.Println("content", tpl.String())
 	params3 := lib.CreateEmailCampaign{
 		Sender:                s,
 		InlineImageActivation: false,
@@ -112,9 +106,8 @@ func (app *application) sendCampaign(w http.ResponseWriter, r *http.Request) {
 		SendAtBestTime:        false,
 		AbTesting:             false,
 		IpWarmupEnable:        false,
-		// TemplateId:            int64(3),
-		HtmlContent: tpl.String(),
-		Subject:     "New Prediction Just Now!",
+		HtmlContent:           tpl.String(),
+		Subject:               "New Prediction Just Now!",
 		Recipients: &lib.CreateEmailCampaignRecipients{
 			ListIds: []int64{9},
 		},
@@ -123,14 +116,11 @@ func (app *application) sendCampaign(w http.ResponseWriter, r *http.Request) {
 	a, _, err := app.brevoClient.EmailCampaignsApi.CreateEmailCampaign(ctx, params3)
 
 	if err != nil {
-		fmt.Println(err, "Error")
 		app.serverError(w, r, err)
 		return
 	}
 
-	fmt.Println(err, a, "Sent")
 	_, err = app.brevoClient.EmailCampaignsApi.SendEmailCampaignNow(ctx, a.Id)
-	fmt.Println(err, a, "Sent 2")
 
 	if err != nil {
 
