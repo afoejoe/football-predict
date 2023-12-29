@@ -6,7 +6,6 @@ import (
 	"net/url"
 	"strconv"
 
-	"github.com/afoejoe/football-predict/internal/validator"
 	"github.com/afoejoe/football-predict/internal/version"
 )
 
@@ -56,15 +55,14 @@ func (app *application) readString(qs url.Values, key string, defaultValue strin
 	return s
 }
 
-func (app *application) readInt(qs url.Values, key string, defaultValue int, v *validator.Validator) int {
+func (app *application) readInt(qs url.Values, key string, defaultValue int) (int, error) {
 	s := qs.Get(key)
 	if s == "" {
-		return defaultValue
+		return defaultValue, nil
 	}
 	i, err := strconv.Atoi(s)
 	if err != nil {
-		v.AddError("must be an integer value")
-		return defaultValue
+		return 0, err
 	}
-	return i
+	return i, nil
 }

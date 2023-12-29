@@ -56,13 +56,13 @@ build:
 ## run: run the cmd/web application
 .PHONY: run
 run: build
-	/tmp/bin/web -http-port=${HTTP_PORT} -db-dsn=${DB_DSN}
+	/tmp/bin/web -http-port=${HTTP_PORT} -db-dsn=${DB_DSN} -smtp-password=${SMTP_PASSWORD} -notifications-email=${NOTIFICATIONS_EMAIL} -brevo-api-key=${BREVO_API_KEY}
 
 ## run/live: run the application with reloading on file changes
 .PHONY: run/live
 run/live:
 	go run github.com/cosmtrek/air@v1.43.0 \
-		--build.cmd "make build" --build.bin "/tmp/bin/web -http-port=${HTTP_PORT} -db-dsn=${DB_DSN}" --build.delay "100" \
+		--build.cmd "make build" --build.bin "/tmp/bin/web -http-port=${HTTP_PORT} -db-dsn=${DB_DSN}  -smtp-password=${SMTP_PASSWORD} -notifications-email=${NOTIFICATIONS_EMAIL} -brevo-api-key=${BREVO_API_KEY}" --build.delay "100" \
 		--build.exclude_dir "" \
 		--build.include_ext "go, tpl, tmpl, html, css, scss, js, ts, sql, jpeg, jpg, gif, png, bmp, svg, webp, ico" \
 		--misc.clean_on_exit "true"

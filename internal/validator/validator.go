@@ -1,9 +1,15 @@
 package validator
 
+import "regexp"
+
 type Validator struct {
 	Errors      []string
 	FieldErrors map[string]string
 }
+
+var (
+	EmailRX = regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+\\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
+)
 
 func (v Validator) HasErrors() bool {
 	return len(v.Errors) != 0 || len(v.FieldErrors) != 0
@@ -37,4 +43,9 @@ func (v *Validator) CheckField(ok bool, key, message string) {
 	if !ok {
 		v.AddFieldError(key, message)
 	}
+}
+
+func ValidateEmail(v Validator, email string) {
+	v.CheckField(email != "", "email", "email must be provided")
+	v.CheckField(Matches(email, EmailRX), "email", "must be a valid email address")
 }

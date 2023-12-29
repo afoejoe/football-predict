@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/afoejoe/football-predict/assets"
@@ -18,7 +17,11 @@ func (app *application) routes() http.Handler {
 
 	mux.HandlerFunc("GET", "/", app.home)
 	mux.HandlerFunc("GET", "/prediction/:slug", app.single)
-	fmt.Println("hello")
+
+	// CAMPAIGN
+	mux.HandlerFunc("POST", "/subscribe", app.subscribe)
+	mux.HandlerFunc("POST", "/campaign/:id", app.sendCampaign)
+
 	//ADMIN
 	mux.Handler("GET", "/admin", app.requireBasicAuthentication(http.HandlerFunc(app.admin)))
 	mux.Handler("GET", "/admin/prediction/:id", app.requireBasicAuthentication(http.HandlerFunc(app.editOrCreatePrediction)))

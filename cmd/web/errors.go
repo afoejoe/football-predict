@@ -34,7 +34,7 @@ func (app *application) reportServerError(r *http.Request, err error) {
 }
 
 func (app *application) serverError(w http.ResponseWriter, r *http.Request, err error) {
-	app.reportServerError(r, err)
+	// app.reportServerError(r, err)
 
 	message := "The server encountered a problem and could not process your request"
 	http.Error(w, message, http.StatusInternalServerError)
@@ -58,4 +58,8 @@ func (app *application) basicAuthenticationRequired(w http.ResponseWriter, r *ht
 
 func (app *application) failedValidationResponse(w http.ResponseWriter, r *http.Request, errors []string) {
 	http.Error(w, strings.Join(errors, ", "), http.StatusUnprocessableEntity)
+}
+
+func (app *application) clientError(w http.ResponseWriter, status int) {
+	http.Error(w, http.StatusText(status), status)
 }

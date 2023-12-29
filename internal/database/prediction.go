@@ -18,6 +18,7 @@ type Prediction struct {
 	ScheduledAt    time.Time `json:"scheduled_at"`
 	IsFeatured     bool      `json:"is_featured"`
 	IsArchived     bool      `json:"is_archived"`
+	Campaigned     bool      `json:"campaigned"`
 	CreatedAt      time.Time `json:"created_at"`
 	UpdatedAt      time.Time `json:"updated_at"`
 }
@@ -26,10 +27,12 @@ var ErrPredictionNotFound = errors.New("prediction not found")
 
 func (db *DB) GetPredictions(showArchived bool) ([]*Prediction, error) {
 	stmt := `
-	SELECT id, title, slug, created_at, scheduled_at, odds, prediction_type
+	SELECT
+		id, title, slug, created_at, scheduled_at, odds, prediction_type, campaigned
 	FROM prediction
 	WHERE ($1 = true OR is_archived = false)
-	ORDER BY scheduled_at, created_at;`
+	ORDER BY scheduled_at, created_at
+	LIMIT 30;`
 
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
@@ -46,7 +49,7 @@ func (db *DB) GetPredictions(showArchived bool) ([]*Prediction, error) {
 	for rows.Next() {
 		p := &Prediction{}
 
-		err = rows.Scan(&p.ID, &p.Title, &p.Slug, &p.CreatedAt, &p.ScheduledAt, &p.Odds, &p.PredictionType)
+		err = rows.Scan(&p.ID, &p.Title, &p.Slug, &p.CreatedAt, &p.ScheduledAt, &p.Odds, &p.PredictionType, &p.Campaigned)
 		if err != nil {
 			return nil, err
 		}
@@ -175,15 +178,16 @@ func (db *DB) UpdatePrediction(p *Prediction) error {
 		prediction_type = $7,
 		is_archived = $8,
 		is_featured = $9,
-		keywords = $10
-	WHERE id = $11
+		keywords = $10,
+		campaigned = $11
+	WHERE id = $12
 	RETURNING id
 	`
 
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	arg := []interface{}{p.Title, p.Slug, p.Body, p.CreatedAt, p.ScheduledAt, p.Odds, p.PredictionType, p.IsArchived, p.IsFeatured, p.Keywords, p.ID}
+	arg := []interface{}{p.Title, p.Slug, p.Body, p.CreatedAt, p.ScheduledAt, p.Odds, p.PredictionType, p.IsArchived, p.IsFeatured, p.Keywords, p.Campaigned, p.ID}
 
 	err := db.QueryRowContext(ctx, stmt, arg...).Scan(&p.ID)
 

@@ -151,20 +151,25 @@
                 </p>
             </div>
         </div>
-        <div class="mx-auto max-w-5xl items-center gap-6 py-12">
+        <div class="mx-auto max-w-5xl items-center gap-6 py-12"
+             id="newsletter-form">
             <div class="flex flex-col w-full bg-white rounded-lg shadow-md overflow-hidden">
                 <div class="px-6 py-4">
                     <h3 class="text-xl font-bold">Subscribe</h3>
                     <p class="mt-2 text-sm text-gray-500">Enter your email address to subscribe to our
                         newsletter.</p>
                 </div>
-                <div class="px-6 py-4 flex items-center space-x-4">
+                <form class="px-6 py-4 flex items-center space-x-4"
+                      action="/subscribe"
+                      method="post">
                     <input class="w-full px-4 py-2 border rounded-md text-gray-700"
                            placeholder="Your email"
-                           type="email">
-                    <button
+                           name="email">
+                    <button type="submit"
+                            hx-post="/subscribe"
+                            hx-target="#newsletter-form"
                             class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-black text-white hover:bg-black/90 h-10 px-4 py-2">Subscribe</button>
-                </div>
+                </form>
             </div>
         </div>
     </div>

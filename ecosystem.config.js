@@ -29,9 +29,11 @@ module.exports = {
         // pre-deploy action
         'pre-deploy-local': "echo 'This is a local executed command'",
         // post-deploy action
-        "post-deploy": "touch .envrc && > .envrc && echo DB_DSN=$DEV_DB_DSN >> .envrc && echo HTTP_PORT=$DEV_HTTP_PORT >> .envrc && echo BASIC_AUTH_HASHED_PASSWORD=$BASIC_AUTH_HASHED_PASSWORD >> .envrc  && echo NOTIFICATIONS_EMAIL=$NOTIFICATIONS_EMAIL >> .envrc && chmod +x ./run.sh && pm2 reload ecosystem.config.js --env dev && pm2 save",
+        "post-deploy": "touch .envrc && > .envrc && echo DB_DSN=$DEV_DB_DSN >> .envrc && echo BREVO_API_KEY=$BREVO_API_KEY >> .envrc && echo SMTP_PASSWORD=$SMTP_PASSWORD >> .envrc && echo HTTP_PORT=$DEV_HTTP_PORT >> .envrc && echo BASIC_AUTH_HASHED_PASSWORD=$BASIC_AUTH_HASHED_PASSWORD >> .envrc  && echo NOTIFICATIONS_EMAIL=$NOTIFICATIONS_EMAIL >> .envrc && chmod +x ./run.sh && pm2 reload ecosystem.config.js --env dev && pm2 save",
         "env": {
             "DEV_DB_DSN": process.env.DEV_DB_DSN,
+            "BREVO_API_KEY": process.env.BREVO_API_KEY,
+            "SMTP_PASSWORD": process.env.SMTP_PASSWORD,
             "DEV_HTTP_PORT": process.env.DEV_HTTP_PORT,
             "BASIC_AUTH_HASHED_PASSWORD": process.env.BASIC_AUTH_HASHED_PASSWORD,
             "NOTIFICATIONS_EMAIL": process.env.NOTIFICATIONS_EMAIL,

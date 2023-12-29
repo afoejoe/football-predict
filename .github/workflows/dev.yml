@@ -39,6 +39,8 @@ jobs:
         run: |
           touch .envrc
           echo DEV_DB_DSN=${{ secrets.DEV_DB_DSN }} >> .envrc
+          echo BREVO_API_KEY=${{ secrets.BREVO_API_KEY }} >> .envrc
+          echo SMTP_PASSWORD=${{ secrets.SMTP_PASSWORD }} >> .envrc
           echo DEV_HTTP_PORT=${{ secrets.DEV_HTTP_PORT }} >> .envrc
           echo BASIC_AUTH_HASHED_PASSWORD=${{ secrets.BASIC_AUTH_HASHED_PASSWORD }} >> .envrc
           echo NOTIFICATIONS_EMAIL=${{ secrets.NOTIFICATIONS_EMAIL }} >> .envrc

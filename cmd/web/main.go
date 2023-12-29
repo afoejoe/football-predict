@@ -13,6 +13,7 @@ import (
 	"github.com/afoejoe/football-predict/internal/smtp"
 	"github.com/afoejoe/football-predict/internal/version"
 
+	brevo "github.com/getbrevo/brevo-go/lib"
 	"github.com/gorilla/sessions"
 )
 
@@ -54,6 +55,7 @@ type config struct {
 		username string
 		password string
 		from     string
+		apiKey   string
 	}
 }
 
@@ -64,6 +66,7 @@ type application struct {
 	mailer       *smtp.Mailer
 	sessionStore *sessions.CookieStore
 	wg           sync.WaitGroup
+	brevoClient  *brevo.APIClient
 }
 
 func run(logger *slog.Logger) error {
@@ -79,11 +82,12 @@ func run(logger *slog.Logger) error {
 	flag.StringVar(&cfg.notifications.email, "notifications-email", "", "contact email address for error notifications")
 	flag.StringVar(&cfg.session.secretKey, "session-secret-key", "cifpelo6vpojukbzz7yqikfuid6tkgru", "secret key for session cookie authentication")
 	flag.StringVar(&cfg.session.oldSecretKey, "session-old-secret-key", "", "previous secret key for session cookie authentication")
-	flag.StringVar(&cfg.smtp.host, "smtp-host", "example.smtp.host", "smtp host")
+	flag.StringVar(&cfg.smtp.host, "smtp-host", "smtp-relay.brevo.com", "smtp host")
 	flag.IntVar(&cfg.smtp.port, "smtp-port", 25, "smtp port")
-	flag.StringVar(&cfg.smtp.username, "smtp-username", "example_username", "smtp username")
+	flag.StringVar(&cfg.smtp.username, "smtp-username", "naijarankofficial@yahoo.com", "smtp username")
 	flag.StringVar(&cfg.smtp.password, "smtp-password", "pa55word", "smtp password")
-	flag.StringVar(&cfg.smtp.from, "smtp-from", "Example Name <no-reply@example.org>", "smtp sender")
+	flag.StringVar(&cfg.smtp.from, "smtp-from", "Sport Predict<no-reply@sport_predict.com>", "smtp sender")
+	flag.StringVar(&cfg.smtp.apiKey, "brevo-api-key", "", "api key for brevo smtp service")
 
 	showVersion := flag.Bool("version", false, "display version and exit")
 
@@ -119,12 +123,19 @@ func run(logger *slog.Logger) error {
 		Secure:   true,
 	}
 
+	brevoCfg := brevo.NewConfiguration()
+	//Configure API key authorization: api-key
+	brevoCfg.AddDefaultHeader("api-key", cfg.smtp.apiKey)
+	//Configure API key authorization: partner-key
+	brevoCfg.AddDefaultHeader("partner-key", cfg.smtp.apiKey)
+
 	app := &application{
 		config:       cfg,
 		db:           db,
 		logger:       logger,
 		mailer:       mailer,
 		sessionStore: sessionStore,
+		brevoClient:  brevo.NewAPIClient(brevoCfg),
 	}
 
 	return app.serveHTTP()

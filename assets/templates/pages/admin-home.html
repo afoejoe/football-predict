@@ -26,6 +26,15 @@
                            class="px-2 py-1 text-sm font-medium text-white bg-green-500 rounded hover:bg-green-600">
                             Edit
                         </a>
+                        {{if .Campaigned}}
+                        Campaigned
+                        {{else}}
+                        <button hx-post="/campaign/{{.ID}}"
+                                hx-target="body"
+                                class="px-2 py-1 text-sm font-medium text-white bg-red-500 rounded hover:bg-red-600">
+                            Send Campaign
+                        </button>
+                        {{end}}
                     </div>
                 </div>
             </div>

@@ -2,7 +2,6 @@ package main
 
 import (
 	"errors"
-	"fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -88,7 +87,6 @@ func (app *application) createPredictionPost(w http.ResponseWriter, r *http.Requ
 	err := request.DecodePostForm(r, &form)
 
 	if err != nil {
-		fmt.Println(err)
 		app.badRequest(w, r, err)
 		return
 	}

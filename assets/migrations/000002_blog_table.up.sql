@@ -10,6 +10,7 @@ CREATE TABLE "prediction" (
     "scheduled_at" timestamptz NOT NULL DEFAULT (now()),
     "is_featured" boolean NOT NULL DEFAULT false,
     "is_archived" boolean NOT NULL DEFAULT false,
+    "campaigned" boolean NOT NULL DEFAULT false,
     "created_at" timestamptz NOT NULL DEFAULT (now()),
     "updated_at" timestamptz NOT NULL DEFAULT (now())
 )
