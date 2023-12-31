@@ -113,7 +113,7 @@ func (app *application) createPredictionPost(w http.ResponseWriter, r *http.Requ
 		PredictionType: form.PredictionType,
 		IsFeatured:     form.IsFeatured,
 		IsArchived:     form.IsArchived,
-		Slug:           funcs.Slugify(form.Title),
+		Slug:           funcs.Slugify(form.Title + " " + form.PredictionType + " " + form.ScheduledAt.Format("2006-01-02")),
 	}
 
 	if form.ID != 0 {
