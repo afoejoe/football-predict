@@ -39,7 +39,9 @@ func (app *application) editOrCreatePrediction(w http.ResponseWriter, r *http.Re
 
 	if slug == "new" {
 		data["Form"] = PredictionForm{
-			Title: "",
+			Title:          "",
+			PredictionType: "",
+			ScheduledAt:    time.Now(),
 		}
 		err := response.Page(w, http.StatusOK, data, "pages/admin-create.html")
 		if err != nil {

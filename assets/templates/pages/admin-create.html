@@ -29,7 +29,9 @@
                        placeholder="Team A vs Team B"
                        type="text"
                        name="title"
-                       value={{.Form.Title}} />
+                       value="{{if
+                       .Form.Title
+                       }}{{.Form.Title}}{{end}}" />
             </div>
             <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2"
@@ -40,7 +42,7 @@
                        placeholder="over 1.5"
                        type="text"
                        name="prediction_type"
-                       value={{.Form.PredictionType}} />
+                       value="{{if .Form.PredictionType}}{{.Form.PredictionType}}{{end}}" />
             </div>
             <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2"
@@ -61,10 +63,10 @@
                     Prediction Odds </label><input
                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                        id="odds"
-                       placeholder="2.5:1"
+                       placeholder="1.5"
                        type="text"
                        name="odds"
-                       value={{.Form.Odds}} />
+                       value="{{if .Form.Odds}}{{.Form.Odds}}{{end}}" />
             </div>
             <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2"
