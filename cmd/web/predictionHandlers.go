@@ -55,7 +55,6 @@ func (app *application) editOrCreatePrediction(w http.ResponseWriter, r *http.Re
 	}
 
 	prediction, err := app.db.GetPrediction(int64(id))
-
 	if err != nil {
 		app.serverError(w, r, err)
 		return
@@ -68,7 +67,7 @@ func (app *application) editOrCreatePrediction(w http.ResponseWriter, r *http.Re
 		Title:          prediction.Title,
 		Body:           prediction.Body,
 		Keywords:       prediction.Keywords,
-		ScheduledAt:    time.Now(),
+		ScheduledAt:    prediction.ScheduledAt,
 		Odds:           prediction.Odds,
 		PredictionType: prediction.PredictionType,
 		IsFeatured:     prediction.IsFeatured,
@@ -115,7 +114,6 @@ func (app *application) createPredictionPost(w http.ResponseWriter, r *http.Requ
 		IsArchived:     form.IsArchived,
 		Slug:           funcs.Slugify(form.Title + " " + form.PredictionType + " " + form.ScheduledAt.Format("2006-01-02")),
 	}
-
 	if form.ID != 0 {
 		p.ID = form.ID
 		err = app.db.UpdatePrediction(p)

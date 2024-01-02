@@ -31,6 +31,7 @@ func (db *DB) GetPredictions(showArchived bool) ([]*Prediction, error) {
 		id, title, slug, created_at, scheduled_at, odds, prediction_type, campaigned
 	FROM prediction
 	WHERE ($1 = true OR is_archived = false)
+	AND DATE(scheduled_at) >= DATE(now())
 	ORDER BY scheduled_at, created_at
 	LIMIT 30;`
 
@@ -69,6 +70,7 @@ func (db *DB) GetFeatured() ([]*Prediction, error) {
 	FROM prediction
 	WHERE is_featured = true
 	AND is_archived = false
+	AND DATE(scheduled_at) >= DATE(now())
 	ORDER BY scheduled_at, created_at;`
 
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
@@ -112,7 +114,6 @@ func (db *DB) GetPrediction(id int64) (*Prediction, error) {
 	row := db.QueryRowContext(ctx, stmt, id)
 
 	p := &Prediction{}
-
 	err := row.Scan(&p.ID, &p.Title, &p.Slug, &p.Body, &p.CreatedAt, &p.ScheduledAt, &p.Odds, &p.PredictionType, &p.IsFeatured, &p.IsArchived, &p.Keywords)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {

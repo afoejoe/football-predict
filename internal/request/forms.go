@@ -35,7 +35,7 @@ func DecodeQueryString(r *http.Request, dst any) error {
 
 func decodeURLValues(v url.Values, dst any) error {
 	decoder.RegisterCustomTypeFunc(func(vals []string) (interface{}, error) {
-		return time.Parse("2006-01-02T15:04", vals[0])
+		return time.Parse("2006-01-02T15:04-0700", vals[0]+"+0300")
 	}, time.Time{})
 
 	err := decoder.Decode(dst, v)
