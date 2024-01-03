@@ -127,7 +127,7 @@ func (db *DB) GetPrediction(id int64) (*Prediction, error) {
 
 func (db *DB) GetPredictionBySlug(slug string) (*Prediction, error) {
 	stmt := `
-	SELECT id, title, slug, body, created_at, scheduled_at, odds, prediction_type
+	SELECT id, title, slug, body, created_at, scheduled_at, odds, prediction_type, keywords
 	FROM prediction
 	WHERE slug = $1
 	`
@@ -138,7 +138,7 @@ func (db *DB) GetPredictionBySlug(slug string) (*Prediction, error) {
 
 	p := &Prediction{}
 
-	err := row.Scan(&p.ID, &p.Title, &p.Slug, &p.Body, &p.CreatedAt, &p.ScheduledAt, &p.Odds, &p.PredictionType)
+	err := row.Scan(&p.ID, &p.Title, &p.Slug, &p.Body, &p.CreatedAt, &p.ScheduledAt, &p.Odds, &p.PredictionType, &p.Keywords)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, ErrPredictionNotFound

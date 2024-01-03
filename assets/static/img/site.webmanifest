@@ -1,0 +1,21 @@
+{
+   "name": "Sport Predict",
+   "short_name": "SP",
+   "description": "Get latest updates on upcoming matches, detailed team information and odds. Track your predictions and performance in your profile.",
+   "start_url": "/",
+   "icons": [
+      {
+         "src": "/static/img/android-chrome-192x192.png",
+         "sizes": "192x192",
+         "type": "image/png"
+      },
+      {
+         "src": "/static/img/android-chrome-512x512.png",
+         "sizes": "512x512",
+         "type": "image/png"
+      }
+   ],
+   "theme_color": "#FFFFFF",
+   "background_color": "#FFFFFF",
+   "display": "standalone"
+}
