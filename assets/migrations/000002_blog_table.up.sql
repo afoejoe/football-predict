@@ -1,3 +1,10 @@
+CREATE TABLE "league" (
+    "id" bigserial PRIMARY KEY,
+    "title" text NOT NULL,
+    "created_at" timestamptz NOT NULL DEFAULT (now()),
+    "updated_at" timestamptz NOT NULL DEFAULT (now())
+);
+
 CREATE TABLE "prediction" (
     "id" bigserial PRIMARY KEY,
     "title" text NOT NULL,
@@ -11,6 +18,7 @@ CREATE TABLE "prediction" (
     "is_featured" boolean NOT NULL DEFAULT false,
     "is_archived" boolean NOT NULL DEFAULT false,
     "campaigned" boolean NOT NULL DEFAULT false,
+    "league_id" bigserial NOT NULL references "league" ("id"),
     "created_at" timestamptz NOT NULL DEFAULT (now()),
     "updated_at" timestamptz NOT NULL DEFAULT (now())
 )

@@ -10,6 +10,11 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
+type PredictionWithBlock struct {
+	Prediction *database.Prediction
+	IsBlocked  bool
+}
+
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	data := app.newTemplateData(r)
 
@@ -17,6 +22,16 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		app.serverError(w, r, err)
 		return
+	}
+
+	predictionsWithBlock := []*PredictionWithBlock{}
+	lastInsertedLeagueID := -1
+
+	for _, p := range predictions {
+		predictionsWithBlock = append(predictionsWithBlock, &PredictionWithBlock{p,
+			p.LeagueID != int64(lastInsertedLeagueID)})
+
+		lastInsertedLeagueID = int(p.LeagueID)
 	}
 
 	featured, err := app.db.GetFeatured()
@@ -30,7 +45,7 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	data["Predictions"] = predictions
+	data["Predictions"] = predictionsWithBlock
 	data["Featured"] = featured
 
 	err = response.Page(w, http.StatusOK, data, "pages/home.html")
@@ -85,7 +100,3 @@ func (app *application) admin(w http.ResponseWriter, r *http.Request) {
 		app.serverError(w, r, err)
 	}
 }
-
-// func (app *application) protected(w http.ResponseWriter, r *http.Request) {
-// 	w.Write([]byte("This is a protected handler"))
-// }

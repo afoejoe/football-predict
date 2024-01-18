@@ -1,0 +1,69 @@
+{{define "page:title"}}Example page{{end}}
+
+{{define "page:main"}}
+<section class="w-full p-4 space-y-8">
+    <div class="flex justify-between items-center">
+        <h1 class="text-3xl font-bold">Create League</h1>
+        <a href="/admin/league">Go Back</a>
+    </div>
+
+    <div class="flex flex-col items-center justify-center">
+
+        <form class="w-full max-w-md bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md"
+              action="/admin/league"
+              method="post">
+            {{if .Form.Validator.HasErrors}}
+            <p id="error">Something was wrong. Please correct the errors below and try again.</p>
+            {{end}}
+            <input type="hidden"
+                   name="id"
+                   value={{.Form.ID}}>
+
+            <div class="mb-4"><label class="block text-gray-700 dark:text-gray-200 text-sm font-bold mb-2"
+                       for="title">
+                    League Title
+                </label>
+                {{with .Form.Validator.FieldErrors.Title}}
+                <span class='error'>{{.}}</span>
+                {{end}}
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-gray-200 leading-tight focus:outline-none focus:shadow-outline"
+                       id="title"
+                       name="title"
+                       placeholder="Premier League 2023/2024"
+                       type="text"
+                       value="{{if .Form.Title}}{{.Form.Title}}{{end}}">
+            </div>
+
+            <div class="flex items-center justify-between">
+
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                        type="submit">
+                    Save</button>
+
+                {{if .Form.ID}}
+                <button hx-delete="/admin/league/{{.Form.ID}}"
+                        hx-target="body"
+                        hx-push-url="true"
+                        hx-confirm="Are you sure?"
+                        class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                        type="button">
+                    Delete
+                </button>
+                {{end}}
+            </div>
+        </form>
+    </div>
+
+</section>
+{{end}}
+<script>
+    console.log(document.body, 'ran');
+    document.body.addEventListener('htmx:beforeSwap', function (evt) {
+        console.error('not found');
+        if (evt.detail.xhr.status >= 400 && evt.detail.xhr.status < 500) {
+            alert('A client side error occurred while processing your request, pls try again');
+        } else if (evt.detail.xhr.status === 500) {
+            alert('Internal Server Error');
+        }
+    });
+</script>

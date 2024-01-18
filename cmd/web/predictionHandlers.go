@@ -24,8 +24,12 @@ type PredictionForm struct {
 	PredictionType string              `form:"prediction_type"`
 	IsFeatured     bool                `form:"is_featured"`
 	IsArchived     bool                `form:"is_archived"`
+	LeagueID       int64               `form:"league_id"`
+	League         database.League     `form:"-"`
 	Validator      validator.Validator `form:"-"`
 }
+
+var ()
 
 func (app *application) editOrCreatePrediction(w http.ResponseWriter, r *http.Request) {
 	data := app.newTemplateData(r)
@@ -37,13 +41,20 @@ func (app *application) editOrCreatePrediction(w http.ResponseWriter, r *http.Re
 		return
 	}
 
+	leagues, err := app.db.GetLeagues()
+	if err != nil {
+		app.serverError(w, r, err)
+		return
+	}
+	data["Leagues"] = leagues
+
 	if slug == "new" {
 		data["Form"] = PredictionForm{
 			Title:          "",
 			PredictionType: "",
 			ScheduledAt:    time.Now(),
 		}
-		err := response.Page(w, http.StatusOK, data, "pages/admin-create.html")
+		err := response.Page(w, http.StatusOK, data, PredictionCreateTemplate)
 		if err != nil {
 			app.serverError(w, r, err)
 		}
@@ -62,8 +73,6 @@ func (app *application) editOrCreatePrediction(w http.ResponseWriter, r *http.Re
 		return
 	}
 
-	// prediction = validator.Validator{}
-
 	data["Form"] = PredictionForm{
 		ID:             prediction.ID,
 		Title:          prediction.Title,
@@ -74,10 +83,12 @@ func (app *application) editOrCreatePrediction(w http.ResponseWriter, r *http.Re
 		PredictionType: prediction.PredictionType,
 		IsFeatured:     prediction.IsFeatured,
 		IsArchived:     prediction.IsArchived,
+		League:         prediction.League,
+		LeagueID:       prediction.LeagueID,
 	}
 	//convert prediction to PredictionForm
 
-	err = response.Page(w, http.StatusOK, data, "pages/admin-create.html")
+	err = response.Page(w, http.StatusOK, data, PredictionCreateTemplate)
 	if err != nil {
 		app.serverError(w, r, err)
 	}
@@ -97,7 +108,7 @@ func (app *application) createPredictionPost(w http.ResponseWriter, r *http.Requ
 	if form.Validator.HasErrors() {
 		data := app.newTemplateData(r)
 		data["Form"] = form
-		err = response.Page(w, http.StatusUnprocessableEntity, data, "pages/admin-create.html")
+		err = response.Page(w, http.StatusUnprocessableEntity, data, PredictionCreateTemplate)
 
 		if err != nil {
 			app.serverError(w, r, err)
@@ -114,6 +125,7 @@ func (app *application) createPredictionPost(w http.ResponseWriter, r *http.Requ
 		PredictionType: form.PredictionType,
 		IsFeatured:     form.IsFeatured,
 		IsArchived:     form.IsArchived,
+		LeagueID:       form.LeagueID,
 		Slug:           funcs.Slugify(form.Title + " " + form.PredictionType + " " + form.ScheduledAt.Format("2006-01-02")),
 	}
 	if form.ID != 0 {

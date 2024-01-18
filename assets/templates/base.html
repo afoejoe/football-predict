@@ -41,17 +41,22 @@
         </main>
         {{template "partial:footer" .}}
     </div>
+
 </body>
+
 <script>
-    document.body.addEventListener('htmx:beforeSwap', function (evt) {
-        console.log('not found');
+    function htmxErrorHandler(evt) {
         if (evt.detail.xhr.status >= 400 && evt.detail.xhr.status < 500) {
             alert('A client side error occurred while processing your request, pls try again');
         } else if (evt.detail.xhr.status === 500) {
             alert('Internal Server Error');
         }
+    }
 
-    });
+    if (!window.theCodeExecuted) {
+        window.theCodeExecuted = true;
+        document.body.addEventListener('htmx:beforeSwap', htmxErrorHandler);
+    }
 </script>
 
 </html>

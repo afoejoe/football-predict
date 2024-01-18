@@ -6,7 +6,7 @@
         <h1 class="text-3xl font-bold">Create Prediction</h1>
         <a href="/admin">Go Back</a>
     </div>
-
+    {{.Form.League}}
     <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
         <form class="md:col-span-2"
               method="post"
@@ -33,6 +33,30 @@
                        .Form.Title
                        }}{{.Form.Title}}{{end}}" />
             </div>
+
+            <div class="mb-4">
+                <label class="block text-gray-700 dark:text-gray-200 text-sm font-bold mb-2"
+                       for="league_id">
+                    League
+                </label>
+                <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-gray-200 leading-tight focus:outline-none focus:shadow-outline"
+                        id="league_id"
+                        name="league_id"
+                        value="{{if
+                            .Form.LeagueID
+                            }}{{.Form.LeagueID}}{{end}}">
+                    <option value="">Select League</option>
+                    {{range .Leagues}}
+                    <option {{if
+                            eq
+                            .ID
+                            $.Form.LeagueID}}selected{{end}}
+                            value="{{.ID}}">{{.Title}}
+                    </option>
+                    {{end}}
+                </select>
+            </div>
+
             <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2"
                        for="prediction-type">
@@ -129,3 +153,14 @@
     </div>
 </section>
 {{end}}
+
+<script>
+    document.body.addEventListener('htmx:beforeSwap', function (evt) {
+        console.error('not found');
+        if (evt.detail.xhr.status >= 400 && evt.detail.xhr.status < 500) {
+            alert('A client side error occurred while processing your request, pls try again');
+        } else if (evt.detail.xhr.status === 500) {
+            alert('Internal Server Error');
+        }
+    });
+</script>

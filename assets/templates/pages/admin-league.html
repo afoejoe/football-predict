@@ -1,0 +1,60 @@
+{{define "page:title"}}Example page{{end}}
+
+{{define "page:main"}}
+<section class="w-full p-4 space-y-8">
+    <div class="flex justify-between items-center">
+        <h1 class="text-3xl font-bold">Leagues</h1>
+
+
+        <div>
+            <a href="/admin/league/new"
+               class="px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded hover:bg-blue-600">Add New</a>
+            <a href="/admin">Go Home</a>
+        </div>
+    </div>
+
+    <div class="flex flex-col items-center justify-center">
+
+        {{with .Leagues}}
+        <div class="relative w-full overflow-auto">
+            <table class="caption-bottom text-sm w-full table-auto">
+                <thead class="[&amp;_tr]:border-b bg-gray-200 dark:bg-gray-800">
+                    <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+                        <th
+                            class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0 w-[200px]">
+                            League
+                        </th>
+                        <th
+                            class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0 w-[100px]">
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="[&amp;_tr:last-child]:border-0">
+                    {{range .}}
+                    <tr
+                        class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted bg-gray-100 dark:bg-gray-900">
+                        <td class="p-4 align-middle font-medium">{{.Title}}</td>
+                        <td class="p-4 align-middle">
+                            <a href="/admin/league/{{.ID}}"
+                               class="px-2 py-1 text-sm font-medium text-white bg-green-500 rounded hover:bg-green-600">
+                                Edit
+                            </a>
+                        </td>
+                    </tr>
+                    {{end}}
+                </tbody>
+            </table>
+        </div>
+        <div class="flex items-center justify-center mt-4 gap-2"><button
+                    class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 bg-gray-200 dark:bg-gray-800">Previous</button>
+            <p class="text-lg">1 of 10</p><button
+                    class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 bg-gray-200 dark:bg-gray-800">Next</button>
+        </div>
+
+        {{else}}
+        <p>No Leagues</p>
+        {{end}}
+    </div>
+</section>
+{{end}}
