@@ -46,7 +46,6 @@ func (db *DB) GetPredictions(showArchived bool) ([]*Prediction, error) {
 	if err != nil {
 		return nil, err
 	}
-
 	defer rows.Close()
 
 	predictions := []*Prediction{}
@@ -77,7 +76,6 @@ func (db *DB) GetPredictions(showArchived bool) ([]*Prediction, error) {
 	if err = rows.Err(); err != nil {
 		return nil, err
 	}
-	fmt.Println(predictions[0])
 
 	return predictions, nil
 }
