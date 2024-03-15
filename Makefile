@@ -51,7 +51,6 @@ test/cover:
 .PHONY: build
 build:
 	go build -o=/tmp/bin/web ./cmd/web
-# GOOS=linux GOARCH=amd64 go build -ldflags='-s' -o=./bin/api-stage ./cmd/api
 
 ## run: run the cmd/web application
 .PHONY: run
