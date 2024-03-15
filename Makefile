@@ -3,7 +3,7 @@
 # ==================================================================================== #
 
 # Include variables from .envrc file
-include .envrc
+include .env
 
 ## help: print this help message
 .PHONY: help
@@ -55,7 +55,7 @@ build:
 
 ## run: run the cmd/web application
 .PHONY: run
-run: build
+run:
 	/tmp/bin/web -http-port=${HTTP_PORT} -db-dsn=${DB_DSN} -smtp-password=${SMTP_PASSWORD} -notifications-email=${NOTIFICATIONS_EMAIL} -brevo-api-key=${BREVO_API_KEY}
 
 ## run/live: run the application with reloading on file changes

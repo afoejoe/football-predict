@@ -1,0 +1,68 @@
+# Comments are provided throughout this file to help you get started.
+# If you need more help, visit the Docker Compose reference guide at
+# https://docs.docker.com/go/compose-spec-reference/
+
+# Here the instructions define your application as a service called "server".
+# This service is built from the Dockerfile in the current directory.
+# You can add other services your application may depend on here, such as a
+# database or a cache. For examples, see the Awesome Compose repository:
+# https://github.com/docker/awesome-compose
+services:
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+      args:
+        - PORT=${PORT:-4444}
+    ports:
+      - ${PORT:-4444}:${PORT:-4444}
+    volumes:
+      - ./:/src # Mount the current directory as /app in the container
+    networks:
+      - predictnetwork
+    depends_on:
+      db:
+        condition: service_healthy
+  prod:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+      args:
+        - PORT=${PORT:-4444}
+    ports:
+      - ${PORT:-4444}:${PORT:-4444}
+    networks:
+      - predictnetwork
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    image: postgres
+    restart: always
+    user: postgres
+    # secrets:
+    #   - db-password
+    volumes:
+      - ./docker-entrypoint-initdb.d/init-user-db.sh:/docker-entrypoint-initdb.d/init-user-db.sh
+      - db-data:/var/lib/postgresql/data
+    environment:
+      - PG_DB=${PG_DB}
+      - PG_USER=${PG_USER}
+      # - POSTGRES_PASSWORD_FILE=/run/secrets/db-password
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    expose:
+      - 5432
+    networks:
+      - predictnetwork
+    healthcheck:
+      test: ['CMD', 'pg_isready']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+volumes:
+  db-data:
+networks:
+  predictnetwork:
+# secrets:
+#   db-password:
+#     file: db/password.txt
