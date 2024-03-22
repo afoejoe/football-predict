@@ -9,7 +9,7 @@ on:
 env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository_owner }}/{{ github.event.repository.name }}:${{ github.sha }}
+  IMAGE_NAME: ${{ github.repository_owner }}/${{ github.event.repository.name }}:${{ github.sha }}
 
 jobs:
   push_to_registry:
