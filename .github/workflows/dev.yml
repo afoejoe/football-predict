@@ -54,7 +54,7 @@ jobs:
           echo POSTGRES_USER=${{ secrets.POSTGRES_USER }} >> .env
           echo POSTGRES_DB=${{ secrets.POSTGRES_DB }} >> .env
           echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env
-          echo DEV_DB_DSN=${{ secrets.DEV_DB_DSN }} >> .env
+          echo DB_DSN=${{secrets.PG_USER}}:${{secrets.POSTGRES_PASSWORD}}@${{secrets.POSTGRES_HOST}}:5432/${{secrets.PG_DB}}?sslmode=disable >> .env
           echo BREVO_API_KEY=${{ secrets.BREVO_API_KEY }} >> .env
           echo SMTP_PASSWORD=${{ secrets.SMTP_PASSWORD }} >> .env
           echo HTTP_PORT=${{ secrets.DEV_HTTP_PORT }} >> .env
