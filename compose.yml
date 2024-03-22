@@ -65,3 +65,5 @@ volumes:
   db-data:
 networks:
   db_network:
+  caddy:
+    external: true
