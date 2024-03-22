@@ -12,38 +12,38 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
-      args:
-        - PORT=${PORT:-4444}
-    environment:
-      - HTTP_PORT=${HTTP_PORT:-4444}
+    env_file:
+      - .env
     ports:
-      - ${PORT:-4444}:${PORT:-4444}
+      - 4000:4000
     volumes:
       - ./:/src # Mount the current directory as /app in the container
     networks:
-      - predictnetwork
+      - db_network
     depends_on:
       db:
-        condition: service_healthy
+        condition: service_started
   prod:
-    build:
-      context: .
-      dockerfile: Dockerfile.prod
-      args:
-        - PORT=${PORT:-4444}
-    ports:
-      - ${PORT:-4444}:${PORT:-4444}
+    container_name: football-predict-container_name-prod
+    image: ${REGISTRY}/${IMAGE_NAME}
+    environment:
+      - REGISTRY=${REGISTRY}
+      - IMAGE_NAME=${IMAGE_NAME}
+    env_file:
+      - .env
+    labels:
+      caddy: predict.naijaanswers.com
+      caddy.reverse_proxy: "{{upstreams 2025}}"
     networks:
-      - predictnetwork
+      - db_network
+      - caddy
     depends_on:
       db:
-        condition: service_healthy
+        condition: service_started
   db:
     image: postgres
     restart: always
     user: postgres
-    # secrets:
-    #   - db-password
     volumes:
       - ./docker-entrypoint-initdb.d/init-user-db.sh:/docker-entrypoint-initdb.d/init-user-db.sh
       - db-data:/var/lib/postgresql/data
@@ -52,21 +52,16 @@ services:
       - PG_USER=${PG_USER}
       - POSTGRES_USER=${PG_USER}
       - POSTGRES_DB=${PG_DB}
-      # - POSTGRES_PASSWORD_FILE=/run/secrets/db-password
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    env_file:
+      - .env
     expose:
       - 5432
     networks:
-      - predictnetwork
+      - db_network
     healthcheck:
       test: ['CMD', 'pg_isready']
-      interval: 10s
-      timeout: 5s
-      retries: 5
 volumes:
   db-data:
 networks:
-  predictnetwork:
-# secrets:
-#   db-password:
-#     file: db/password.txt
+  db_network:

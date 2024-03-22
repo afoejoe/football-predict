@@ -2,6 +2,6 @@ bin/
 tmp/
 build-errors.log
 .envrc
-/.env
+.env
 .DS_Store
 deploy.key

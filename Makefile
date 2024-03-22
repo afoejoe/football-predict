@@ -3,7 +3,7 @@
 # ==================================================================================== #
 
 # Include variables from .envrc file
-include .env
+-include .env
 
 ## help: print this help message
 .PHONY: help

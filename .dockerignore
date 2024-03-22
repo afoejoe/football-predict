@@ -7,8 +7,8 @@
 **/.DS_Store
 **/.classpath
 **/.dockerignore
-**/.envrc
-# **/.env
+# **/.envrc
+**/.env
 **/.git
 **/.gitignore
 **/.project
